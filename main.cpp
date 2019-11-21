@@ -58,7 +58,7 @@ void strEncrypt::decomp1(){
     string tstring = fileString;
     counter1 = 0;
 
-    int charFound = fileString.find("\n");
+    int charFound = fileString.find("\0");
     if(charFound>0){
         tstring = fileString.erase(fileString.length()-1,1);
     }
@@ -111,8 +111,10 @@ void *decompress(void *args){
 
     mainChar -> reverse();
     for(index=mainChar -> begin(); index!= mainChar -> end(); index++){
-        cout<<index -> mainChars<<"Binary code = "<<index -> fileString<<endl;//CHANGE mainChar used to be mainChars//textLine used to be fileString
+        cout<<index -> mainChars<<"Binary code = "<<endl;
+        cout<<index -> fileString<<endl;//CHANGE mainChar used to be mainChars//textLine used to be fileString
     }
+    cout<<"Decompressed file contents: "<<endl;
     list<string> decompressed;
     string decLine="";
     
