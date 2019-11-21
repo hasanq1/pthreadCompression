@@ -21,16 +21,15 @@
 #include <fstream>
 
 using namespace std;
-sem_t semaphore;//preinitialized semaphore
+sem_t semaphore;//uninitialized global semaphore
 
 void *compress(void *args);//handle encrypt
 void *decompress(void *args);//final decrypt
 string outputDec(list<string> decompression);
 class strEncrypt{
-
 public:
-    strEncrypt(string fileString){
-        mainChars = fileString;
+    strEncrypt(string file){
+        fileString = file;
     }
     string mainChars;
     string fileString;
@@ -71,10 +70,10 @@ void strEncrypt::decomp1(){
     }
     else{
         tstring.erase(0,2);
-        mainChars=tstring[0];
+        mainChars=fileString[0];
     }
 
-    textLine = fileString;
+    textLine = tstring;
     for (int c =0; c<textLine.length();c++){
         if(textLine[c]=='1'){
             counter1++;
@@ -104,7 +103,6 @@ void *compress(void *args){
 }
 
 void *decompress(void *args){
-    //decompress
     //enter critical section
     sem_wait(&semaphore);
     list<strEncrypt>::iterator index;//iter
@@ -115,19 +113,19 @@ void *decompress(void *args){
     for(index=mainChar -> begin(); index!= mainChar -> end(); index++){
         cout<<index -> mainChars<<"Binary code = "<<index -> fileString<<endl;//CHANGE mainChar used to be mainChars//textLine used to be fileString
     }
-
     list<string> decompressed;
     string decLine="";
-
-    int localIterate=0;
-
-    for(index=mainChar->begin(); index!=mainChar -> end(); index++){
-
+    
+    for(index=mainChar->begin(); index!=mainChar -> end(); index++)
+    {
         queue<char> temporaryString;
-        for (int i= 0; i<index -> fileString.length();i++){
+        for (int i= 0; i<index -> fileString.length();i++)
+        {
             temporaryString.push(index -> fileString[i]);
         }
+        int localIterate=0;
         while(!temporaryString.empty()){
+            
             char newIndex=temporaryString.front();
             if(newIndex=='1'){
                 list<string>::iterator localMainCharIndex = decompressed.begin();
@@ -147,9 +145,9 @@ int main(){
     //p_tid threadID;
     list<strEncrypt> mainChar;//keys
 
-    sem_init(&semaphore,0,1);
+    sem_init(&semaphore,0,1);//initialize semaphore by reference
     string textLine;//line
-    ifstream testFile("test1.txt");
+    ifstream testFile("/Users/hasan/Desktop/HasanThread/HasanThread/test2.txt");
 
     int threadCheck;
     //create pthreads from symbols
