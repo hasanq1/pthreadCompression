@@ -149,7 +149,7 @@ int main(int argv, char* argc[]){
 
     sem_init(&semaphore,0,1);//initialize semaphore by reference
     string textLine;//line
-    ifstream testFile("/Users/hasan/Desktop/HasanThread/HasanThread/test2.txt");
+    ifstream testFile(argc[1]);
 
     int threadCheck;
     //create pthreads from symbols
