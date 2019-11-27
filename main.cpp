@@ -111,8 +111,8 @@ void *decompress(void *args){
 
     mainChar -> reverse();
     for(index=mainChar -> begin(); index!= mainChar -> end(); index++){
-        cout<<index -> mainChars<<"Binary code = "<<endl;
-        cout<<index -> fileString<<endl;//CHANGE mainChar used to be mainChars//textLine used to be fileString
+        cout<< index -> mainChars <<" Binary code = "<< index -> fileString << endl;
+        //CHANGE mainChar used to be mainChars//textLine used to be fileString
     }
     cout<<"Decompressed file contents: "<<endl;
     list<string> decompressed;
@@ -142,7 +142,7 @@ void *decompress(void *args){
     sem_post(&semaphore);
     return NULL;
 }
-int main(){
+int main(int argv, char* argc[]){
     pthread_t mainThread;
     //p_tid threadID;
     list<strEncrypt> mainChar;//keys
@@ -153,7 +153,7 @@ int main(){
 
     int threadCheck;
     //create pthreads from symbols
-        while(getline(testFile,textLine,'\0')){
+        while(getline(testFile,textLine)){
 
             mainChar.push_back(strEncrypt(textLine));
             threadCheck=pthread_create(&mainChar.back().threads,NULL,compress,(void *)&mainChar.back());
