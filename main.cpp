@@ -46,11 +46,11 @@ bool strEncrypt::operator>(const strEncrypt &linE) const{
 
     bool endof = mainChars=="<EOL>";
     bool checkendOF = linE.mainChars== "<EOL>";
-    bool ASCIIcomp = (int)mainChars[0]<(int)linE.mainChars[0];
-    bool freq = counter1==linE.counter1;
+    bool ASCIIcomp = (int)mainChars[0] < (int)linE.mainChars[0];
+    bool freq = counter1 > linE.counter1;
     bool isEqual = counter1== linE.counter1;
 
-    return  freq || (isEqual && ((!endof && checkendOF) || ASCIIcomp));
+    return  freq || (isEqual && ((endof && !checkendOF) || ASCIIcomp));
 }
 
 void strEncrypt::decomp1(){
@@ -105,14 +105,13 @@ void *compress(void *args){
 void *decompress(void *args){
     //enter critical section
     sem_wait(&semaphore);
-    list<strEncrypt>::iterator index;//iter
-    list<strEncrypt> *mainChar = (list<strEncrypt> *)args;//iter)
+    list<strEncrypt>::iterator index;
+    list<strEncrypt> *mainChar = (list<strEncrypt> *)args;
     mainChar -> sort(greater<strEncrypt>());
 
     mainChar -> reverse();
     for(index=mainChar -> begin(); index!= mainChar -> end(); index++){
-        cout<< index -> mainChars <<" Binary code = "<< index -> fileString << endl;
-        //CHANGE mainChar used to be mainChars//textLine used to be fileString
+        cout<< index -> mainChars <<" Binary code = "<< index -> textLine << endl;
     }
     cout<<"Decompressed file contents: "<<endl;
     list<string> decompressed;
@@ -121,9 +120,9 @@ void *decompress(void *args){
     for(index=mainChar->begin(); index!=mainChar -> end(); index++)
     {
         queue<char> temporaryString;
-        for (int i= 0; i<index -> fileString.length();i++)
+        for (int i= 0; i<index -> textLine.length();i++)
         {
-            temporaryString.push(index -> fileString[i]);
+            temporaryString.push(index -> textLine[i]);
         }
         int localIterate=0;
         while(!temporaryString.empty()){
@@ -149,7 +148,7 @@ int main(int argv, char* argc[]){
 
     sem_init(&semaphore,0,1);//initialize semaphore by reference
     string textLine;//line
-    ifstream testFile(argc[1]);
+    ifstream testFile("/Users/hasan/Desktop/HasanThread/HasanThread/test1.txt");
 
     int threadCheck;
     //create pthreads from symbols
