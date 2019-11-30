@@ -141,19 +141,17 @@ void *decompress(void *args){
     sem_post(&semaphore);
     return NULL;
 }
-int main(int argv, char* argc[]){
+int main(int argc, char *argv[]){
     pthread_t mainThread;
     //p_tid threadID;
-    list<strEncrypt> mainChar;//keys
+    list<strEncrypt> mainChar;
 
-    sem_init(&semaphore,0,1);//initialize semaphore by reference
-    string textLine;//line
-    ifstream testFile("/Users/hasan/Desktop/HasanThread/HasanThread/test1.txt");
-
+    sem_init(&semaphore,0,1);
+    string textLine;
+    //string testFile(argv[1]);
     int threadCheck;
-    //create pthreads from symbols
-        while(getline(testFile,textLine)){
-
+    
+        while(getline(cin,textLine)){
             mainChar.push_back(strEncrypt(textLine));
             threadCheck=pthread_create(&mainChar.back().threads,NULL,compress,(void *)&mainChar.back());
 
