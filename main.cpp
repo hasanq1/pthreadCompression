@@ -66,7 +66,7 @@ void strEncrypt::decomp1(){
     if(endOF >= 0){
 
         tstring.erase(0,6);
-        mainChars = "<EOL>";
+        mainChars = '\n';
     }
     else{
         tstring.erase(0,2);
